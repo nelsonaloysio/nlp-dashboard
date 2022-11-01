@@ -1,0 +1,41 @@
+<head>
+  <style>
+    body { margin: 0; overflow: "hidden"; }
+    .scene-tooltip { background-color: rgba(0, 0, 0, 0.6); }
+  </style>
+  <script>
+  {FORCE_GRAPH_3D}
+  </script>
+</head>
+<body>
+  <div id="graph"></div>
+  <script>
+    const gData = {
+      nodes: {NODES},
+      links: {LINKS},
+    };
+    const Graph = ForceGraph3D({ rendererConfig: { antialias: false, alpha: false }})
+      (document.getElementById('graph'))
+        .backgroundColor("#00000000")
+        .width(1000)
+        .graphData(gData)
+        .linkOpacity(0.3)
+        .nodeOpacity(0.9)
+        .linkDirectionalArrowLength({ARROW_LENGTH})
+        // .cooldownTime(500)
+        // .linkWidth("weight")
+        // .nodeVal("{{ size_by }}")
+        // .enableNodeDrag(false)
+        // .onNodeHover(node => elem.style.cursor = node ? 'pointer' : null)
+        // .onNodeClick(node => window.open(node.url, '_blank'))
+        ;
+        elementResizeDetectorMaker().listenTo(
+          {callOnAdd: true},
+          elem,
+          function(el) {
+              Graph.width(el.offsetWidth);
+              Graph.height(el.offsetHeight);
+          }
+        );
+  </script>
+</body>

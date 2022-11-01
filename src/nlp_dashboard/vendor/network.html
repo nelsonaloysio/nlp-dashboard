@@ -1,0 +1,44 @@
+<head>
+  <style>
+    body { margin: 0; overflow: "hidden"; }
+    .scene-tooltip { background-color: rgba(0, 0, 0, 0.6); }
+  </style>
+  <script>
+  {FORCE_GRAPH}
+  </script>
+</head>
+<body>
+  <div id="graph"></div>
+  <script>
+    const gData = {
+      nodes: {NODES},
+      links: {LINKS},
+    };
+    const Graph = ForceGraph({ rendererConfig: { antialias: false, alpha: false }})
+      (document.getElementById('graph'))
+        .backgroundColor("#00000000")
+        .width(1000)
+        .graphData(gData)
+        // .nodeOpacity(0.9)
+        .linkDirectionalArrowLength({ARROW_LENGTH})
+        .linkWidth(10)
+        .nodeId('id')
+        .nodeCanvasObject((node, ctx, globalScale) => {
+          const label = node.name;
+          const fontSize = 14/globalScale;
+          ctx.font = `${fontSize}px Sans-Serif`;
+          const textWidth = ctx.measureText(label).width;
+          const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
+
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.0)';
+          ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
+
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillStyle = node.color;
+          ctx.fillText(label, node.x, node.y);
+
+          node.__bckgDimensions = bckgDimensions; // to re-use in nodePointerAreaPaint
+        });
+  </script>
+</body>
