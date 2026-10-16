@@ -1,23 +1,18 @@
-ARG LTS=24.04
+FROM python:3.10-slim-bookworm
 
-FROM ubuntu:${LTS}
-
-USER root
-
-FROM python:3.11
-
-COPY . /tmp/app
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libgl1 \
+        tesseract-ocr \
+        tesseract-ocr-all \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /tmp/app
 
-RUN apt-get update
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN apt-get install -y libgl1-mesa-glx tesseract-ocr tesseract-ocr-eng
-
-# RUN apt-get install -y tesseract-ocr-all
-
-RUN pip install -r requirements.txt
+COPY . .
 
 EXPOSE 8501
 
-CMD ["streamlit", "run", "src/dashboard/run.py"]
+CMD ["streamlit", "run", "src/dashboard/run.py", "--server.address=0.0.0.0"]

@@ -1,6 +1,8 @@
-# ✨ The Culture Hack Labs NLP Dashboard App ✨
+# Natural Language Processing Dashboard App
 
 Data processing pipeline, command line interface, notebook, and Streamlit dashboard.
+
+> Proof of concept deployed as a [Streamlit community app](https://nlp-dashboard-app.streamlit.app/) for demonstration purposes.
 
 ## About
 
@@ -97,7 +99,7 @@ nlp-dashboard
 If the library is not installed locally, execute instead:
 
 ```bash
-streamlit run run.py
+streamlit run src/nlp_dashboard/dashboard/run.py
 ```
 
 #### Requirements

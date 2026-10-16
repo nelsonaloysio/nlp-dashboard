@@ -4,6 +4,7 @@ from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
+from sklearn.feature_extraction.text import strip_accents_ascii
 
 from .filters import filter_text, grep
 
@@ -23,7 +24,7 @@ def kwic(
     keywords = prepare_keywords(keywords)
 
     if not case_sensitive:
-        keywords = [keyword.lower() for keyword in keywords]
+        keywords = [strip_accents_ascii(keyword.lower()) for keyword in keywords]
 
     for keyword in keywords:
         index = series.index.get_indexer(series.index)
@@ -43,7 +44,7 @@ def kwic(
         ]
 
         for i, row in enumerate(series.iloc[index]):
-            text = (row if case_sensitive else row.lower())
+            text = (row if case_sensitive else strip_accents_ascii(row.lower()))
             start = 0
 
             while all([kw in text[start:len(text)] for kw in kws]):

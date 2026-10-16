@@ -77,6 +77,8 @@ class KMeans(BaseTransformer):
         min_k, max_k = self.n_clusters[0], min(self.n_clusters[1], len(X))
 
         z = torch.tensor(np.array([x if type(x) != dict else x["embedding"] for x in X]))
+        # MPS does not support float64 tensors.
+        z = z.to(self.device, dtype=torch.float32 if self.device == "mps" else None)
         log.info(f"Clustering samples with K-Means algorithm (device: {self.device}).")
 
         for k in range(min_k, max_k):
@@ -129,11 +131,10 @@ class KMeans(BaseTransformer):
         return KneeLocator(list(inertia.keys()), list(inertia.values()), curve="convex", direction="decreasing").elbow
 
     def _inertia(self, km):
-        return km.inertia_ if self.device == "cpu" else float(km._result.inertia.numpy())
+        return km.inertia_ if self.device == "cpu" else float(km._result.inertia.cpu().numpy())
 
     def _init(self, k):
         if self.device == "cpu":
-
             return (MiniBatchKMeans if self.minibatch else KMeansCPU)(
                 n_clusters=k,
                 init=self.init,
@@ -143,12 +144,10 @@ class KMeans(BaseTransformer):
                 verbose=1 if self.verbose else 0,
             )
 
-        elif self.device == "cuda":
-
+        else:
             if self.minibatch is True:
                 log.warn("MiniBatch K-Means algorithm is only supported in the CPU implementation. "
                          "Defaulting to regular K-Means (torch_kmeans) algorithm.")
-
             return KMeansCUDA(
                 n_clusters=k,
                 init=self.init,
@@ -157,5 +156,3 @@ class KMeans(BaseTransformer):
                 seed=self.seed,
                 verbose=self.verbose,
             )
-
-        raise AssertionError("Invalid device, expected 'cpu' or 'cuda'.")

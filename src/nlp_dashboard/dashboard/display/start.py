@@ -1,6 +1,6 @@
 import streamlit as st
 
-URL = "https://github.com/culturehacklabs/nlp-dashboard"
+URL = "https://github.com/nelsonaloysio/nlp-dashboard"
 
 
 @classmethod

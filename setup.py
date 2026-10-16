@@ -1,10 +1,10 @@
 from distutils.core import setup
 from setuptools import find_packages
 
-url = "https://github.com/culturehacklabs/nlp-dashboard"
+url = "https://github.com/nelsonaloysio/nlp-dashboard"
 
 description = """
-Python package for the Culture Hack Labs dashboard.
+Python package for the Natural Language Processing Dashboard App.
 """
 
 with open("README.md") as f:
@@ -24,7 +24,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url=url,
-    author="Culture Hack Labs",
+    author="Nelson Aloysio Reis de Almeida Passos",
     # license="",
     # keywords=[],
     python_requires=">=3.10",

@@ -37,7 +37,7 @@ def display_download(self) -> None:
                     "Download",
                     data=buffer,
                     key="artifacts_download",
-                    file_name="CHL Dashboard Analysis.zip",
+                    file_name="NLP Dashboard Analysis.zip",
                     type="primary",
                 )
 

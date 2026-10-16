@@ -35,21 +35,23 @@ from .display.themes import display_themes
 
 PAGE_CONFIG = {
     "layout": "wide",
-    "page_title": "Culture Hack Labs Dashboard App",
-    "page_icon": "https://dashboard.culturehack.io/favicon.ico",
+    "page_title": "Natural Language Processing Dashboard App",
+    "page_icon": "✨",
     "menu_items": {
-        "Report a bug": "https://github.com/culturehacklabs/nlp-dashboard/issues",
+        "Report a bug": "https://github.com/nelsonaloysio/nlp-dashboard/issues",
     }
 }
 
 TITLE = """
-    <h1 align="center">✨ The Culture Hack Labs Dashboard App ✨</h1>
+    <h1 align="center">✨ Natural Language Processing Dashboard App ✨</h1>
     """
 
 FOOTNOTE = """
     ___
-    > Note: This is a prototype intended for demo purposes of the Culture Hack Labs Dashboard
-    > App and does not represent the final product. Recommended resolution: `1920x1080`.
+    > © 2026 Nelson Aloysio Reis de Almeida Passos.
+    > Proof of concept for demonstration purposes only;
+    > source code available on [GitHub](https://github.com/nelsonaloysio/nlp-dashboard).
+    > Recommended resolution: `1920x1080`.
     """
 
 

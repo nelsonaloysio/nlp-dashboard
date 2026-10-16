@@ -16,7 +16,7 @@ PATH = osp.abspath(osp.join(str(Path(__file__).parent.parent), "dashboard/run.py
 
 
 def getargs(args: list = sys.argv[1:]) -> Tuple[Namespace, list]:
-    parser = ArgumentParser("Culture Hack Labs Dashboard Application")
+    parser = ArgumentParser("Natural Language Processing Dashboard App")
 
     parser.add_argument("--log",
                         action="store",

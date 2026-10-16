@@ -33,9 +33,7 @@ REQUIRES_SPACY = (
 )
 
 FOOTNOTE = """
-    A <a href="https://culturehack.io" style="text-decoration: none">Culture Hack Labs</a> project.
-    © 2022-2024.
-    """
+"""
 
 DEBUG_ENABLED = True
 

@@ -21,7 +21,7 @@ log.basicConfig(format=LOG_FORMAT, level=log.INFO)
 
 
 def getargs(args: list = sys.argv[1:]) -> Tuple[Namespace, list]:
-    parser = ArgumentParser("Culture Hack Labs Dashboard Pipeline")
+    parser = ArgumentParser("Natural Language Processing Dashboard App Pipeline")
 
     parser.add_argument("inputs",
                         type=str,

@@ -86,10 +86,19 @@ def process_data(X, **hyperparams) -> dict:
     if "embedding" in artifacts:
         embedding = artifacts.pop("embedding")
 
-        artifacts.update({
-            "embedding-3d": (UMAP if USING_UMAP else TSNE)(n_components=3).fit_transform(embedding),
-            "embedding-2d": (UMAP if USING_UMAP else TSNE)(n_components=2).fit_transform(embedding),
-        })
+        try:
+            artifacts.update({
+                "embedding-3d": (UMAP if USING_UMAP else TSNE)(n_components=3).fit_transform(embedding),
+            })
+        except Exception as e:
+            log.error(f"Error occurred while transforming embedding-3d: {e}")
+
+        try:
+            artifacts.update({
+                "embedding-2d": (UMAP if USING_UMAP else TSNE)(n_components=2).fit_transform(embedding),
+            })
+        except Exception as e:
+            log.error(f"Error occurred while transforming embedding-2d: {e}")
 
     return {k: artifacts[k] for k in sorted(artifacts)}
 

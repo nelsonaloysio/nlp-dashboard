@@ -65,6 +65,8 @@ def display_artifact_left(artifact, kwic, keywords, artifact_over_time, theme):
     with c1_checkbox[1]:
         st.write("")
         st.checkbox("Normalize frequencies.", key=f"normalize_{theme}")
+        if artifact_over_time is not None:
+            st.checkbox("Expand time series.", key=f"empty_intervals", value=True)
 
     # Handle simple pagination through displayed results.
     pagination = st.session_state.pagination.get(theme, 0)
@@ -154,7 +156,7 @@ def display_artifact_right(artifact, artifact_over_time, kwic, keywords, paginat
             height=550,
             kind="bar",
             stack="normalize" if st.session_state.get(f"normalize_{theme}") else True,
-            to_datetime=True,
+            to_datetime=st.session_state.get("empty_intervals"),
         )
 
     else:
@@ -183,11 +185,13 @@ def display_artifact_right(artifact, artifact_over_time, kwic, keywords, paginat
             artifact_over_time,
             # fill_with=st.session_state.artifacts["time_series"].index if "time_series" in st.session_state.artifacts else None,
             height=550,
+            isin=result.index.tolist()[pagination_range[0]:pagination_range[1]],
             kind="bar",
             stack="normalize" if st.session_state.get(f"normalize_{theme}") else True,
             scale_y=None,  # False if st.session_state.get(f"normalize_{theme}") else [0, scale_y],
-            sort=artifact.index.tolist()[pagination_range[0]:pagination_range[1]],
-            to_datetime=True,
+            # sort=artifact.index.tolist()[pagination_range[0]:pagination_range[1]],
+            sort_x="x",
+            to_datetime=st.session_state.get("empty_intervals"),
         )
 
     return chart

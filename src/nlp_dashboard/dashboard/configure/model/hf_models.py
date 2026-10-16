@@ -28,11 +28,11 @@ MODEL_LANGUAGE = {
 
 MODELS_AVAILABLE = {
     "en": [
+        "annakotarba/sentence-similarity",
         "distilbert/distilbert-base-cased",
         "distilbert/distilbert-base-uncased",
         "google-bert/bert-base-cased",
         "google-bert/bert-base-uncased",
-        "annakotarba/sentence-similarity",
     ],
     "xx": [
         "bert-base-multilingual-cased",

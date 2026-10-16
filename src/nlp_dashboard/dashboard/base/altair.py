@@ -79,10 +79,13 @@ def altair_groupchart(
     kind="bar",
     height=600,
     interpolate=None,
+    isin=None,
     mark_opacity=1.0,
     scale_x=False,
     scale_y=False,
-    sort=None,
+    sort_color=None,
+    sort_x=None,
+    sort_y=None,
     stack=True,
     to_datetime=False,
     x="index",
@@ -92,9 +95,9 @@ def altair_groupchart(
     if df is None:
         return alt.Chart(None).properties(height=height).mark_bar()
 
-    if sort:
-        df = df[df[c].isin(sort)].copy()
-        key = {v: i for i, v in enumerate(sort)}
+    if isin:
+        df = df[df[c].isin(isin)].copy()
+        key = {v: i for i, v in enumerate(isin)}
         df[f"{c}_Sort"] = df[c].apply(key.get)
         df.sort_values([f"{c}_Sort", x], ascending=[True, True], inplace=True)
 
@@ -115,18 +118,18 @@ def altair_groupchart(
             x=alt.X(
                 x,
                 scale=alt.Scale(nice=False, domain=scale_x) if scale_x else alt.Scale(nice=True),
-                sort=None,
+                sort=sort_x,
                 title="",
             ),
             y=alt.Y(
                 y,
                 axis=alt.Axis(tickMinStep=0.1 if stack == "normalize" else 1),
                 scale=alt.Scale(nice=True, domain=scale_y) if scale_y else alt.Scale(nice=True),
-                sort=None,
+                sort=sort_y,
                 stack=stack,
                 title="",
             ),
-            color=alt.Color(c, sort=sort),
+            color=alt.Color(c, sort=sort_color),
             order=alt.Order(field="color", sort="descending"),
             tooltip=[c, x, y],
         )

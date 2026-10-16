@@ -28,8 +28,9 @@ class Processor(BaseTransformer):
         min_time_steps: int = MIN_TIME_STEPS,
         stopwords_custom: Optional[list] = None,
         stopwords_language: Optional[Union[str, list, bool]] = True,
+        time_format: str = None,
     ):
-        self.dates = self.__dates(dates, min_time_steps)
+        self.dates = self.__dates(dates, min_time_steps, time_format)
         self.json = json
         self.max_groups = max_groups
         self.max_objects = max_objects
@@ -207,7 +208,7 @@ class Processor(BaseTransformer):
         )
 
     @staticmethod
-    def __dates(dates: list, min_time_steps: int = MIN_TIME_STEPS):
+    def __dates(dates: list, min_time_steps: int = MIN_TIME_STEPS, time_format: str = None):
         dates_ = None
 
         if dates is not None:
@@ -217,10 +218,13 @@ class Processor(BaseTransformer):
 
             dates = pd.to_datetime(dates)
 
-            for time_format in ["", "%H", "%H:%M", "%H:%M:%S"]:
-                dates_ = dates.apply(lambda x: datetime.strftime(x, f"%Y-%m-%d {time_format}"))
-                if dates_.unique().shape[0] >= min_time_steps:
-                    break
+            if time_format:
+                dates_ = dates.apply(lambda x: datetime.strftime(x, time_format))
+            else:
+                for time_format in ["", "%H", "%H:%M", "%H:%M:%S"]:
+                    dates_ = dates.apply(lambda x: datetime.strftime(x, f"%Y-%m-%d {time_format}"))
+                    if dates_.unique().shape[0] >= min_time_steps:
+                        break
 
         return dates_
 

@@ -4,7 +4,7 @@ from string import ascii_letters, digits, punctuation
 from typing import Union
 
 import pandas as pd
-from sklearn.feature_extraction.text import strip_accents_ascii
+# from sklearn.feature_extraction.text import strip_accents_ascii
 
 from .abc import BaseTransformer
 
@@ -18,7 +18,7 @@ ACCENT_REPLACEMENTS = {
 
 INVALID_CHARACTERS = punctuation + "'\\\"–—¡¿…‘’“”„,•·|"
 CHARACTER_REPLACEMENTS = str.maketrans(" ", " ", INVALID_CHARACTERS)
-VALID_CHARACTERS = ascii_letters + digits
+VALID_CHARACTERS = ascii_letters + digits + "áãâàèêéíìñòóôõùúüç"
 
 # Usernames, Hashtags and mentions
 USERNAME_CHARACTERS = VALID_CHARACTERS + "_@#."
@@ -39,6 +39,7 @@ REPLACE_WITH = {
     "’": "'",
     "'s": " ",
     "\n": " ",
+    "\r": " ",
     "](": " ",
     "&amp;": " & ",
     "ftp": " ftp",

@@ -2,6 +2,16 @@ import streamlit as st
 
 from ..utils import drop_empty, to_datetime
 
+TIME_FORMAT = {
+    None: "Automatic",
+    "%Y": "Years",
+    "%Y-%m": "Months",
+    "%Y-%m-%d": "Days",
+    "%Y-%m-%d %H": "Hours",
+    "%Y-%m-%d %H:%M": "Minutes",
+    "%Y-%m-%d %H:%M:%S": "Seconds",
+}
+
 
 @classmethod
 def configure_column_date(self) -> None:
@@ -18,6 +28,31 @@ def configure_column_date(self) -> None:
         options=options,
         format_func=lambda x: "Choose an option" if x == False else x,
     )
+    st.caption("The first column named `date`, `datetime`, `time` or `timestamp` is selected by default if found.")
+
+    self.title("Time resolution", h=6, spacing=False)
+
+    columns = st.columns(2)
+
+    with columns[0]:
+        time_format = st.selectbox(
+            "Select the desired time resolution for temporal analysis.",
+            options=list(TIME_FORMAT.keys()) + ["Custom format"],
+            index=0,
+            format_func=lambda x: TIME_FORMAT.get(x, x),
+        )
+    with columns[1]:
+        custom_time_format = st.text_input(
+            "Custom time format",
+            value="",
+            placeholder="e.g. %Y-%m-%d %H:%M:%S",
+            disabled=time_format != "Custom format",
+        )
+        if time_format == "Custom format":
+            time_format = custom_time_format
+    st.caption("By default, the time resolution is automatically determined based on the available data.")
+
+    st.session_state.config["time_format"] = time_format
 
     if column == options[0]:
         getattr(self, "info" if disabled else "warning")("No %s, time series analysis will be skipped." % ("other columns available" if disabled else "column selected"))
@@ -29,7 +64,8 @@ def configure_column_date(self) -> None:
         st.session_state.pop("dates", None)
         disabled = True
 
-    elif not len(dates := to_datetime(st.session_state.data[column])):
+    elif not len(dates := to_datetime(st.session_state.data[column], st.session_state.config["time_format"])):
+        st.write(dates)
         self.error(f"Error: column contains invalid or empty values.")
         st.session_state.pop("dates", None)
         disabled = True
@@ -43,4 +79,3 @@ def configure_column_date(self) -> None:
         st.session_state.dates = dates
 
     st.session_state.config["dates"] = None if disabled else column
-    st.caption("The first column named `date`, `datetime`, `time` or `timestamp` is selected by default if found.")
